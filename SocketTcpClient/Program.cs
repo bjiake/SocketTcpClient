@@ -5,15 +5,82 @@ using System.Net.Sockets;
 
 namespace SocketTcpClient
 {
-    class Program
+    class Program : DealCards
     {
         // адрес и порт сервера, к которому будем подключаться
         static int port = 2115; // порт сервера
         static string address = "127.0.0.1"; // адрес сервера 176.196.126.194
         // Локальный адресс 127.0.0.1
 
+        public static void RecieveTableCardsFromServer(Socket user)
+        {
+            //Остановился на получении данных клиента
+            string CardSuit = "empty";//Данные для сообщения
+            byte[] data = Encoding.Unicode.GetBytes(CardSuit);
+
+            // получаем ответ
+            data = new byte[256]; // буфер для ответа
+            StringBuilder builder = new StringBuilder();
+            int bytes = 0; // количество полученных байт
+
+            do
+            {
+                bytes = user.Receive(data, data.Length, 0);
+                builder.Append(Encoding.Unicode.GetString(data, 0, bytes));
+            }
+            while (user.Available > 0);
+
+            //Console.WriteLine("ответ сервера: " + builder.ToString());
+            data = null;
+            bytes = 0;
+            builder.Clear();
+        }
+        
+        public static void RecieveTableCardsData(Socket user, Card card)
+        {//ОСТАНОВИЛСЯ НА ТОМ ЧТО НАДО БЫЛО НЕ СТРИНГ А ИНТ ПЕРЕДАВАТЬ Я В АХУЕ
+            string CardValue = null;
+            string CardSuit = null;
+
+            byte[] dataSuit = Encoding.Unicode.GetBytes(CardSuit);
+            byte[] dataValue = Encoding.Unicode.GetBytes(CardValue);
+
+            dataSuit = new byte[256]; // буфер для ответа
+            dataValue = new byte[256];
+
+            StringBuilder builderSuit = new StringBuilder();
+            StringBuilder builderValue = new StringBuilder();
+            int bytes = 0; // количество полученных байт
+            for (int i = 0; i < 3; i++)
+            {
+                do
+                {
+                    bytes = user.Receive(dataValue, dataValue.Length, 0);
+                    builderSuit.Append(Encoding.Unicode.GetString(dataSuit, 0, bytes));
+                }
+                while (user.Available > 0);
+
+                CardSuit = builderSuit.ToString();
+
+                bytes = 0;
+                do
+                {
+                    bytes = user.Receive(dataSuit, dataSuit.Length, 0);
+                    builderValue.Append(Encoding.Unicode.GetString(dataSuit, 0, bytes));
+                }
+                while (user.Available > 0);
+
+                CardValue = builderValue.ToString();
+
+                int x = 0;
+
+                DisplayFlope(CardSuit, CardValue, i);
+            }
+        }
+
+        //Получить данные
         public static void RecieveServerData(Socket user)
         {
+            Console.Clear();
             string message = "empty";//Данные для сообщения
             byte[] data = Encoding.Unicode.GetBytes(message);
 
@@ -34,6 +101,25 @@ namespace SocketTcpClient
             builder.Clear();
         }
 
+        public static void RecieveFlopeServerData(Socket user)
+        {
+            Console.Clear();
+            string CardSuit = "empty";//Данные для сообщения
+            byte[] dataSuit = Encoding.Unicode.GetBytes(CardSuit);
+
+            // получаем ответ
+            dataSuit = new byte[256]; // буфер для ответа
+            StringBuilder builder = new StringBuilder();
+            int bytes = 0; // количество полученных байт
+            for (int i = 0; i < 3; i++)
+            { 
+
+            }
+
+
+        }
+
+        //отправить данные
         public static void SendServerData(Socket user)
         {
             string message = "empty";//Данные для сообщения
@@ -69,8 +155,13 @@ namespace SocketTcpClient
                 // подключаемся к удаленному хосту
                 user.Connect(ipPoint);
 
-
                 RecieveServerData(user);
+
+                //RecieveServerData(user);
+
+                //Console.Clear()
+                
+
                 SendServerData(user);
 
                 
