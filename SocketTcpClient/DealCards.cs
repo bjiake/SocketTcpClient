@@ -23,7 +23,11 @@ namespace SocketTcpClient
         public void Deal()
         {
             //SetUpDeck();//Создание колоды карт
-            //GetHand();//Тасование в руки
+            for(int i = 3; i < 3; i++)
+            {
+                GetHand(TableCards[i]);//Тасование в руки
+            }
+            
             //SortCards();//Сортировка для сравнивания
             //DisplayPlayersCard();//Показать карты игрока
             //Motion();//Сделать ход(bet, fold, raise, check, call)
@@ -34,6 +38,10 @@ namespace SocketTcpClient
             //DisplayRiver();//Ривер
             ////Сделать ход(bet, fold, raise, check, call)
             ////EvalueateHands();//Подсчет очков
+        }
+        public static void GetHand(Card card)
+        {
+            Card.SUIT = 0;//ОСТАНОВИЛСЯ НА ПРИСВАИВАНИЕ ТИПА
         }
         //public void Fold()
         //{

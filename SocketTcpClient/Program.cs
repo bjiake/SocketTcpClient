@@ -2,6 +2,7 @@
 using System.Text;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace SocketTcpClient
 {
@@ -101,22 +102,54 @@ namespace SocketTcpClient
             builder.Clear();
         }
 
-        public static void RecieveFlopeServerData(Socket user)
+        public static void RecieveFlopeSuitServerData(Socket user)
         {
-            Console.Clear();
-            string CardSuit = "empty";//Данные для сообщения
+            
+            string CardSuit = "empty"; //Данные для сообщения
+            int enumCardSuit;
             byte[] dataSuit = Encoding.Unicode.GetBytes(CardSuit);
 
             // получаем ответ
             dataSuit = new byte[256]; // буфер для ответа
             StringBuilder builder = new StringBuilder();
             int bytes = 0; // количество полученных байт
-            for (int i = 0; i < 3; i++)
-            { 
-
+            do
+            {
+                bytes = user.Receive(dataSuit, dataSuit.Length, 0);
+                builder.Append(Encoding.Unicode.GetString(dataSuit, 0, bytes));
             }
+            while (user.Available > 0);
+            CardSuit = builder.ToString();
+            enumCardSuit = Int32.Parse(CardSuit);//Значение масти карты
+            Console.WriteLine("Значения масти: " + builder.ToString() + "\n");
+            Console.WriteLine("Aboba");
+            dataSuit = null;
+            bytes = 0;
+            builder.Clear();
+        }
+        public static void RecieveFlopeValueServerData(Socket user)
+        {
+            string CardValue = "empty"; //Данные для сообщения
+            int enumCardValue;
+            byte[] dataValue = Encoding.Unicode.GetBytes(CardValue);
 
+            // получаем ответ
+            dataValue = new byte[256]; // буфер для ответа
+            StringBuilder builder = new StringBuilder();
+            int bytes = 0; // количество полученных байт
+            do
+            {
+                bytes = user.Receive(dataValue, dataValue.Length, 0);
+                builder.Append(Encoding.Unicode.GetString(dataValue, 0, bytes));
+            }
+            while (user.Available > 0);
+            CardValue = builder.ToString();
+            enumCardValue = Int32.Parse(CardValue);//Значение масти карты
 
+            Console.WriteLine("Значения карты: " +enumCardValue + "\n");
+            dataValue = null;
+            bytes = 0;
+            builder.Clear();
         }
 
         //отправить данные
@@ -136,6 +169,7 @@ namespace SocketTcpClient
             user.Send(data);
             data = null;
             bytes = 0;
+            builder.Clear();
         }
 
         public static void CloseSocket(Socket user)
@@ -160,11 +194,17 @@ namespace SocketTcpClient
                 //RecieveServerData(user);
 
                 //Console.Clear()
-                
+                //ПРИСВАИВАНИЕ ТИПА
 
                 SendServerData(user);
+                Console.Clear();
+                RecieveFlopeSuitServerData(user);
+                Thread.Sleep(5000);
+                RecieveFlopeValueServerData(user);
 
+                DealCards dealCards = new();
                 
+
             }
             catch (Exception ex)
             {
