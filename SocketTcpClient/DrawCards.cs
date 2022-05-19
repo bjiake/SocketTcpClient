@@ -34,7 +34,7 @@ namespace SocketTcpClient
             }
         }
         // Отображение масти и значения карты внутри контура
-        public static void DrawCardSuitValue(string cardSuit, string cardValue, int xCoordinate, int yCoordinate)
+        public static void DrawCardSuitValue(Card card, int xCoordinate, int yCoordinate)
         {
             string CardSuit = " ";
 
@@ -43,22 +43,23 @@ namespace SocketTcpClient
 
             //По коду CP437
             //Черви и бубны красные, трефы и черви черные(2665, 2666, 2660, 2663)
-            switch (cardSuit)
+            switch (card.MySuit)
             {
                 //Массив с 1 элементом, значения масти по коду CP437, Вывод
-                case "\u2665":
+                case Card.SUIT.Hearts:
                     CardSuit = "\u2665";// Hearts
                     Console.ForegroundColor = ConsoleColor.Red;
                     break;
-                case "\u2666":
+                case Card.SUIT.Diamonds:
                     CardSuit = "\u2666";// Diamonds
                     Console.ForegroundColor = ConsoleColor.Red;
                     break;
-                case "\u2660":
+                case Card.SUIT.Clubs:
                     CardSuit = "\u2660"; // Spades
+
                     Console.ForegroundColor = ConsoleColor.Black;
                     break;
-                case "\u2663":
+                case Card.SUIT.Spades:
                     CardSuit = "\u2663"; // Clubs
                     Console.ForegroundColor = ConsoleColor.Black;
                     break;
@@ -68,7 +69,7 @@ namespace SocketTcpClient
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.Write(CardSuit);
             Console.SetCursorPosition(x + 4, y + 7);
-            Console.Write(cardValue);
+            Console.Write(card.MyValue);
         }
     }
 }
