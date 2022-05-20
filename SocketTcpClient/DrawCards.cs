@@ -49,15 +49,15 @@ namespace SocketTcpClient
                 CardSuit = "\u2665";// Hearts
                 Console.ForegroundColor = ConsoleColor.Red;
             }
-            else if (suitCard == 2)
-            {
-                CardSuit = "\u2666";// Diamonds
-                Console.ForegroundColor = ConsoleColor.Red;
-            }
             else if (suitCard == 1)
             {
                 CardSuit = "\u2660"; // Spades
                 Console.ForegroundColor = ConsoleColor.Black;
+            }
+            else if (suitCard == 2)
+            {
+                CardSuit = "\u2666";// Diamonds
+                Console.ForegroundColor = ConsoleColor.Red;
             }
             else if (suitCard == 3)
             {

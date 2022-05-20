@@ -163,14 +163,52 @@ namespace SocketTcpClient
         }
         public static void RecieveHandCard(Socket user)
         {
-            int[] arrayEnumCardSuit = RecieveFlopeSuitServerData(user);
-            sleep();
-            int[] arrayEnumCardValue = RecieveFlopeValueServerData(user);
-            sleep();
-            //for (int i = 0; i < 2; i++)
-            //{
-            //    dealCards.GetHand(dealCards.TableCards[i], arrayEnumCardSuit, arrayEnumCardValue, i);
-            //}
+            string Cards = "empty"; //Данные для сообщения
+            int enumCard;
+            byte[] dataSuit = Encoding.Unicode.GetBytes(Cards);
+
+            // получаем ответ
+            dataSuit = new byte[256]; // буфер для ответа
+            StringBuilder builder = new StringBuilder();
+            int bytes = 0; // количество полученных байт
+            do
+            {
+                bytes = user.Receive(dataSuit, dataSuit.Length, 0);
+                builder.Append(Encoding.Unicode.GetString(dataSuit, 0, bytes));
+            }
+            while (user.Available > 0);
+            Cards = builder.ToString();//302 12 23 11 
+            
+            enumCard = Int32.Parse(Cards);//Значение масти карты
+            //
+            if (stage == 1)
+            {//311209
+                //Console.WriteLine(Cards[0]);
+                arrayEnumCardSuit[0] = enumCard / 100000;//3
+                arrayEnumCardSuit[1] = enumCard / 10000 % 10;//1
+                arrayEnumCardValue[0] = enumCard / 100 % 100;//12
+                arrayEnumCardValue[1] = enumCard % 100;//09
+            }
+            else if(stage == 2)
+            {//302 12 23 11
+                arrayEnumCardSuit[0] = enumCard / 100000000;//3
+                arrayEnumCardSuit[1] = enumCard / 10000000 % 10;//0
+                arrayEnumCardSuit[2] = enumCard / 1000000 % 10;//2
+                arrayEnumCardValue[0] = enumCard / 10000 % 100;//12
+                arrayEnumCardValue[1] = enumCard / 100 % 100;//23
+                arrayEnumCardValue[2] = enumCard % 100;//11
+                Console.WriteLine(enumCard);
+            }
+            // Console.WriteLine(enumCard);
+            enumCard = 0;
+            Cards = null;
+            dataSuit = null;
+            bytes = 0;
+            builder.Clear();
+            //int[] arrayEnumCardSuit = RecieveFlopeSuitServerData(user);
+            //sleep();
+            //int[] arrayEnumCardValue = RecieveFlopeValueServerData(user);
+            //sleep();
         }
         public static void RecieveFlope(Socket user)
         {
@@ -204,7 +242,7 @@ namespace SocketTcpClient
         }
         public static void sleep()
         {
-            //Thread.Sleep(5000);
+            Thread.Sleep(500);
         }
         public static void CloseSocket(Socket user)
         {
@@ -253,16 +291,16 @@ namespace SocketTcpClient
                 // подключаемся к удаленному хосту
                 user.Connect(ipPoint);
                 
-                RecieveServerData(user);
-
                 //RecieveServerData(user);
 
-                //Console.Clear()
-                //ВЫВОД ФЛОПА
+                ////RecieveServerData(user);
+
+                ////Console.Clear()
+                ////ВЫВОД ФЛОПА
 
                 
                 
-                SendServerData(user);
+                //SendServerData(user);
                 Console.Clear();
                 //dealCards.DisplayPlayerCard();
                 //
@@ -271,15 +309,16 @@ namespace SocketTcpClient
                 //
                 RecieveHandCard(user);
                 dealCards.DisplayPlayerCard();
-                
-                RecieveFlope(user);
+                stage++;
+                sleep();
+                RecieveHandCard(user);
                 dealCards.DisplayFlope();
 
-                RecieveTurn(user);
-                dealCards.DisplayTurn();
+                //RecieveTurn(user);
+                //dealCards.DisplayTurn();
 
-                RecieveRiver(user);
-                dealCards.DisplayRiver();
+                //RecieveRiver(user);
+                //dealCards.DisplayRiver();
             }
             catch (Exception ex)
             {
