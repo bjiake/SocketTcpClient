@@ -105,8 +105,7 @@ namespace SocketTcpClient
             else if (stage == 4)
             {
                 arrayEnumCardSuit[stage] = enumCardSuit;
-                Console.WriteLine(stage);
-                //Console.WriteLine("Значения масти: " + builder.ToString() + "\n");
+                //Console.WriteLine("Значения масти: " + enumCardSuit + "\n");
             }
             //{ enumCardSuit / 100, enumCardSuit / 10 % 10, enumCardSuit % 10, 0, 0 };
 
@@ -152,7 +151,7 @@ namespace SocketTcpClient
             }
             else if (stage == 4)
             {
-                arrayEnumCardSuit[stage] = enumCardValue;
+                arrayEnumCardValue[stage] = enumCardValue;
                 //Console.WriteLine("Значения карты: " + enumCardValue + "\n");
             }
 
@@ -165,9 +164,9 @@ namespace SocketTcpClient
         public static void RecieveHandCard(Socket user)
         {
             int[] arrayEnumCardSuit = RecieveFlopeSuitServerData(user);
-            Thread.Sleep(5000);
+            sleep();
             int[] arrayEnumCardValue = RecieveFlopeValueServerData(user);
-            Thread.Sleep(5000);
+            sleep();
             //for (int i = 0; i < 2; i++)
             //{
             //    dealCards.GetHand(dealCards.TableCards[i], arrayEnumCardSuit, arrayEnumCardValue, i);
@@ -177,9 +176,9 @@ namespace SocketTcpClient
         {
             stage++;//2
             int[] arrayEnumCardSuit = RecieveFlopeSuitServerData(user);
-            Thread.Sleep(5000);
+            sleep();
             int[] arrayEnumCardValue = RecieveFlopeValueServerData(user);
-            Thread.Sleep(5000);
+            sleep();
             //for (int i = 0; i < 3; i++)
             //{
             //    dealCards.GetHand(dealCards.TableCards[i], arrayEnumCardSuit, arrayEnumCardValue, i);
@@ -189,21 +188,24 @@ namespace SocketTcpClient
         {
             stage++;//3
             int[] arrayEnumCardSuit = RecieveFlopeSuitServerData(user);
-            Thread.Sleep(5000);
+            sleep();
             int[] arrayEnumCardValue = RecieveFlopeValueServerData(user);
-            Thread.Sleep(5000);
+            sleep();
             //dealCards.GetHand(dealCards.TableCards[stage], arrayEnumCardSuit, arrayEnumCardValue, stage);
         }
         public static void RecieveRiver(Socket user)
         {
             stage++;//4
             int[] arrayEnumCardSuit = RecieveFlopeSuitServerData(user);
-            Thread.Sleep(5000);
+            sleep();
             int[] arrayEnumCardValue = RecieveFlopeValueServerData(user);
-            Thread.Sleep(5000);
+            sleep();
             //dealCards.GetHand(dealCards.TableCards[stage], arrayEnumCardSuit, arrayEnumCardValue, stage);
         }
-
+        public static void sleep()
+        {
+            //Thread.Sleep(5000);
+        }
         public static void CloseSocket(Socket user)
         {
             // закрываем сокет
