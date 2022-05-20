@@ -224,6 +224,27 @@ namespace SocketTcpClient
                 x++;
             }
         }
+
+        public void DisplayTurn()
+        {
+            int x = 3;//Счет карты
+            int y = 2;//Курсор(вверх вниз)
+
+            Console.SetCursorPosition(x, y);
+
+            DrawCards.DrawCardOutLine(x, y);
+            DrawCards.DrawCardSuitValue(x, y, Program.arrayEnumCardSuit[x], Program.arrayEnumCardValue[x]);
+        }
+        public void DisplayRiver()//Отображение ривера
+        {
+            int x = 4;//Счет карты
+            int y = 2;//Курсор(вверх вниз)
+
+            Console.SetCursorPosition(x, y);
+
+            DrawCards.DrawCardOutLine(x, y);
+            DrawCards.DrawCardSuitValue(x, y, Program.arrayEnumCardSuit[x], Program.arrayEnumCardValue[x]);
+        }
     }
 
 
