@@ -41,7 +41,6 @@ namespace SocketTcpClient
             int i = 0;
             foreach(SUIT s in Enum.GetValues(typeof(SUIT)))
             {
-                
                 if (i == arrrayEnumCardSuit[numberOfCycle])
                 {
                     TableCards[i] = new Card { MySuit = s};
@@ -54,7 +53,6 @@ namespace SocketTcpClient
             }
             foreach (VALUE v in Enum.GetValues(typeof(VALUE)))
             {
-
                 if (i == arrrayEnumCardSuit[numberOfCycle])
                 {
                     TableCards[i] = new Card { MyValue = v };
@@ -183,7 +181,7 @@ namespace SocketTcpClient
             for (int i = 0; i < 3; i++)
             {
                 DrawCards.DrawCardOutLine(x, y);
-                DrawCards.DrawCardSuitValue(TableCards[i], x, y);
+                DrawCards.DrawCardSuitValue(x, y, Program.arrayEnumCardSuit[i], Program.arrayEnumCardValue[i]);
                 x++;
             }
         }
@@ -209,24 +207,23 @@ namespace SocketTcpClient
         //    DrawCards.DrawCardSuitValue(TableCards[x], x, y);
         //}
 
-        //public void DisplayPlayersCard()
-        //{
-
-        //    //Отображение карт игрока
-        //    int y = 14;//Перемещение в место для карт игрока
-        //    int x = 0;
-        //    Console.SetCursorPosition(x, y);
-        //    Console.ForegroundColor = ConsoleColor.DarkBlue;
-        //    Console.WriteLine("Карты Игрока");
-        //    y = 15;
-        //    Console.SetCursorPosition(x, y);
-        //    for (int i = 5; i < 7; i++)
-        //    {
-        //        DrawCards.DrawCardOutLine(x, y);
-        //        DrawCards.DrawCardSuitValue(SortedPlayerHand[i - 5], x, y);
-        //        x++;
-        //    }
-        //}
+        public void DisplayPlayerCard()
+        {
+            //Отображение карт игрока
+            int y = 14;//Перемещение в место для карт игрока
+            int x = 0;
+            Console.SetCursorPosition(x, y);
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.WriteLine("Карты Игрока");
+            y = 15;
+            Console.SetCursorPosition(x, y);
+            for (int i = 0; i < 2; i++)
+            {
+                DrawCards.DrawCardOutLine(x, y);
+                DrawCards.DrawCardSuitValue(x, y, Program.arrayEnumCardSuit[i], Program.arrayEnumCardValue[i]);
+                x++;
+            }
+        }
     }
 
 

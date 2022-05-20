@@ -34,7 +34,7 @@ namespace SocketTcpClient
             }
         }
         // Отображение масти и значения карты внутри контура
-        public static void DrawCardSuitValue(Card card, int xCoordinate, int yCoordinate)
+        public static void DrawCardSuitValue(int xCoordinate, int yCoordinate, int suitCard, int valueCard)
         {
             string CardSuit = " ";
 
@@ -43,33 +43,88 @@ namespace SocketTcpClient
 
             //По коду CP437
             //Черви и бубны красные, трефы и черви черные(2665, 2666, 2660, 2663)
-            switch (card.MySuit)
-            {
-                //Массив с 1 элементом, значения масти по коду CP437, Вывод
-                case Card.SUIT.Hearts:
-                    CardSuit = "\u2665";// Hearts
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    break;
-                case Card.SUIT.Diamonds:
-                    CardSuit = "\u2666";// Diamonds
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    break;
-                case Card.SUIT.Clubs:
-                    CardSuit = "\u2660"; // Spades
 
-                    Console.ForegroundColor = ConsoleColor.Black;
-                    break;
-                case Card.SUIT.Spades:
-                    CardSuit = "\u2663"; // Clubs
-                    Console.ForegroundColor = ConsoleColor.Black;
-                    break;
+            if(suitCard == 0)
+            {
+                CardSuit = "\u2665";// Hearts
+                Console.ForegroundColor = ConsoleColor.Red;
             }
-            //Отображение масти и значения карт
+            else if (suitCard == 2)
+            {
+                CardSuit = "\u2666";// Diamonds
+                Console.ForegroundColor = ConsoleColor.Red;
+            }
+            else if (suitCard == 1)
+            {
+                CardSuit = "\u2660"; // Spades
+                Console.ForegroundColor = ConsoleColor.Black;
+            }
+            else if (suitCard == 3)
+            {
+                CardSuit = "\u2663"; // Clubs
+                Console.ForegroundColor = ConsoleColor.Black;
+            }
+
+            string CardValue = " ";
+            
+            if(valueCard == 12)
+            {
+                CardValue = "Two";
+            }
+            else if (valueCard == 13)
+            {
+                CardValue = "Three";
+            }
+            else if (valueCard == 14)
+            {
+                CardValue = "Four";
+            }
+            else if (valueCard == 15)
+            {
+                CardValue = "Five";
+            }
+            else if (valueCard == 16)
+            {
+                CardValue = "Six";
+            }
+            else if (valueCard == 17)
+            {
+                CardValue = "Seven";
+            }
+            else if (valueCard == 18)
+            {
+                CardValue = "Eight";
+            }
+            else if (valueCard == 19)
+            {
+                CardValue = "Nine";
+            }
+            else if (valueCard == 20)
+            {
+                CardValue = "Ten";
+            }
+            else if (valueCard == 21)
+            {
+                CardValue = "Jack";
+            }
+            else if (valueCard == 22)
+            {
+                CardValue = "Queen";
+            }
+            else if (valueCard == 23)
+            {
+                CardValue = "King";
+            }
+            else if (valueCard == 24)
+            {
+                CardValue = "Ace";
+            }
+
             Console.SetCursorPosition(x + 5, y + 5);
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.Write(CardSuit);
             Console.SetCursorPosition(x + 4, y + 7);
-            Console.Write(card.MyValue);
+            Console.Write(CardValue);
         }
     }
 }

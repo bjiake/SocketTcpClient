@@ -17,7 +17,7 @@ namespace SocketTcpClient
         }
         public enum VALUE
         {
-            Two = 2, Three, Four, Five, Six, Seven, Eight, Nine,
+            Two = 12, Three, Four, Five, Six, Seven, Eight, Nine,
             Ten, Jack, Queen, King, Ace
         }
         public SUIT MySuit { get; set; }
