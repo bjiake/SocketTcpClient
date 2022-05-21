@@ -6,64 +6,8 @@ using System.Threading.Tasks;
 
 namespace SocketTcpClient 
 {
-    class DealCards : Deck
+    class DealCards
     {
-        private Card[] PlayerHand;
-        public Card[] TableCards;
-        private Card[] SortedPlayerHand;
-        private Card[] SortedTableCards;
-
-        public DealCards()
-        {
-            PlayerHand = new Card[2];
-            SortedPlayerHand = new Card[2];
-            TableCards = new Card[5];
-            SortedTableCards = new Card[5];
-        }
-        public void Deal()
-        {
-            //SetUpDeck();//Создание колоды карт
-            
-            
-            //SortCards();//Сортировка для сравнивания
-            //DisplayPlayersCard();//Показать карты игрока
-            //Motion();//Сделать ход(bet, fold, raise, check, call)
-            //DisplayFlope();//Флоп
-            ////Сделать ход(bet, fold, raise, check, call)
-            //DisplayTern();//Терн
-            ////Сделать ход(bet, fold, raise, check, call)
-            //DisplayRiver();//Ривер
-            ////Сделать ход(bet, fold, raise, check, call)
-            ////EvalueateHands();//Подсчет очков
-        }
-        public void GetHand(Card card, int []arrrayEnumCardSuit, int []arrayEnumCardValue, int numberOfCycle)
-        {
-            int i = 0;
-            foreach(SUIT s in Enum.GetValues(typeof(SUIT)))
-            {
-                if (i == arrrayEnumCardSuit[numberOfCycle])
-                {
-                    TableCards[i] = new Card { MySuit = s};
-                }
-                if(i == 4)
-                {
-                    i = 0;
-                }
-                i++;
-            }
-            foreach (VALUE v in Enum.GetValues(typeof(VALUE)))
-            {
-                if (i == arrrayEnumCardSuit[numberOfCycle])
-                {
-                    TableCards[i] = new Card { MyValue = v };
-                }
-                if (i == 4)
-                {
-                    i = 0;
-                }
-                i++;
-            }
-        }
         //public void Fold()
         //{
 
@@ -165,26 +109,7 @@ namespace SocketTcpClient
         //        index++;
         //    }
         //}
-        public void DisplayFlope()//Отображение флопа
-        {
-            int x = 0;//Счет карты
-            int y = 1;//Курсор(вверх вниз)//ЛСП карусель
-
-            //Отображение карт дилера
-
-            Console.SetCursorPosition(x, y);
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Карты Дилера");
-            y = 2;
-            Console.SetCursorPosition(x, y);
-
-            for (int i = 0; i < 3; i++)
-            {
-                DrawCards.DrawCardOutLine(x, y);
-                DrawCards.DrawCardSuitValue(x, y, Program.arrayEnumCardSuit[i], Program.arrayEnumCardValue[i]);
-                x++;
-            }
-        }
+        
         //public void DisplayTern()//Отображение терна
         //{
         //    int x = 3;//Счет карты
@@ -214,10 +139,31 @@ namespace SocketTcpClient
             int x = 0;
             Console.SetCursorPosition(x, y);
             Console.ForegroundColor = ConsoleColor.DarkBlue;
-            Console.WriteLine("Карты Игрока");
+            Console.WriteLine("Ваши карты");
             y = 15;
             Console.SetCursorPosition(x, y);
             for (int i = 0; i < 2; i++)
+            {
+                DrawCards.DrawCardOutLine(x, y);
+                DrawCards.DrawCardSuitValue(x, y, Program.arrayEnumCardSuit[i], Program.arrayEnumCardValue[i]);
+                x++;
+            }
+        }
+
+        public void DisplayFlope()//Отображение флопа
+        {
+            int x = 0;//Счет карты
+            int y = 1;//Курсор(вверх вниз)//ЛСП карусель
+
+            //Отображение карт дилера
+
+            Console.SetCursorPosition(x, y);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Карты Дилера");
+            y = 2;
+            Console.SetCursorPosition(x, y);
+
+            for (int i = 0; i < 3; i++)
             {
                 DrawCards.DrawCardOutLine(x, y);
                 DrawCards.DrawCardSuitValue(x, y, Program.arrayEnumCardSuit[i], Program.arrayEnumCardValue[i]);
@@ -233,7 +179,7 @@ namespace SocketTcpClient
             Console.SetCursorPosition(x, y);
 
             DrawCards.DrawCardOutLine(x, y);
-            DrawCards.DrawCardSuitValue(x, y, Program.arrayEnumCardSuit[x], Program.arrayEnumCardValue[x]);
+            DrawCards.DrawCardSuitValue(x, y, Program.arrayEnumCardSuit[Program.stage], Program.arrayEnumCardValue[Program.stage]);
         }
         public void DisplayRiver()//Отображение ривера
         {
@@ -243,7 +189,7 @@ namespace SocketTcpClient
             Console.SetCursorPosition(x, y);
 
             DrawCards.DrawCardOutLine(x, y);
-            DrawCards.DrawCardSuitValue(x, y, Program.arrayEnumCardSuit[x], Program.arrayEnumCardValue[x]);
+            DrawCards.DrawCardSuitValue(x, y, Program.arrayEnumCardSuit[Program.stage], Program.arrayEnumCardValue[Program.stage]);
         }
     }
 
