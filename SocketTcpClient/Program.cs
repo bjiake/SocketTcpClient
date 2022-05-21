@@ -7,16 +7,16 @@ using System.Threading;
 namespace SocketTcpClient
 {
 
-    class Program : DealCards
+    class Program : DisplayOnConsole
     {
         // адрес и порт сервера, к которому будем подключаться
         static int port = 2115; // порт сервера
         static string address = "127.0.0.1"; // адрес сервера 176.196.126.194
         // Локальный адресс 127.0.0.1
-        public static int[] arrayEnumCardSuit = new int[5];
-        public static int[] arrayEnumCardValue = new int[5];
+        public static int[] arraySuitOfCards = new int[5];
+        public static int[] arrayValueOfCards = new int[5];
         public static int stage = 1;//stage 2 handCard, stage 3 flope and turn, stage 4 river
-        public static DealCards dealCards = new();
+        public static DisplayOnConsole display = new();
         public static void RecieveTableCardsFromServer(Socket user)
         {
             //Остановился на получении данных клиента
@@ -90,32 +90,32 @@ namespace SocketTcpClient
             if (stage == 1)
             {//311209
                 //Console.WriteLine(Cards[0]);
-                arrayEnumCardSuit[0] = enumCard / 100000;//3
-                arrayEnumCardSuit[1] = enumCard / 10000 % 10;//1
-                arrayEnumCardValue[0] = enumCard / 100 % 100;//12
-                arrayEnumCardValue[1] = enumCard % 100;//09
+                arraySuitOfCards[0] = enumCard / 100000;//3
+                arraySuitOfCards[1] = enumCard / 10000 % 10;//1
+                arrayValueOfCards[0] = enumCard / 100 % 100;//12
+                arrayValueOfCards[1] = enumCard % 100;//09
             }
             else if(stage == 2)
             {//302 12 23 11
-                arrayEnumCardSuit[0] = enumCard / 100000000;//3
-                arrayEnumCardSuit[1] = enumCard / 10000000 % 10;//0
-                arrayEnumCardSuit[2] = enumCard / 1000000 % 10;//2
-                arrayEnumCardValue[0] = enumCard / 10000 % 100;//12
-                arrayEnumCardValue[1] = enumCard / 100 % 100;//23
-                arrayEnumCardValue[2] = enumCard % 100;//11
+                arraySuitOfCards[0] = enumCard / 100000000;//3
+                arraySuitOfCards[1] = enumCard / 10000000 % 10;//0
+                arraySuitOfCards[2] = enumCard / 1000000 % 10;//2
+                arrayValueOfCards[0] = enumCard / 10000 % 100;//12
+                arrayValueOfCards[1] = enumCard / 100 % 100;//23
+                arrayValueOfCards[2] = enumCard % 100;//11
                 
             }
             else if(stage == 3)
             {//212
                 //Console.WriteLine(Cards);
-                arrayEnumCardSuit[3] = enumCard / 100;//2
-                arrayEnumCardValue[3] = enumCard % 100;//12
+                arraySuitOfCards[3] = enumCard / 100;//2
+                arrayValueOfCards[3] = enumCard % 100;//12
             }
             else if(stage == 4)
             {//315
                 //Console.WriteLine(Cards);
-                arrayEnumCardSuit[4] = enumCard / 100;//3
-                arrayEnumCardValue[4] = enumCard % 100;//15
+                arraySuitOfCards[4] = enumCard / 100;//3
+                arrayValueOfCards[4] = enumCard % 100;//15
             }
             // Console.WriteLine(enumCard);
 
@@ -160,7 +160,7 @@ namespace SocketTcpClient
             Console.Title = "Блэйк Джек";
 
             ConsoleColor[] colors = (ConsoleColor[])ConsoleColor.GetValues(typeof(ConsoleColor));
-            Console.BackgroundColor = ConsoleColor.DarkGreen;
+            Console.BackgroundColor = ConsoleColor.Gray;
             Console.Clear();
 
             Console.BufferWidth = 120;
@@ -172,7 +172,7 @@ namespace SocketTcpClient
             {
                 IPEndPoint ipPoint = new IPEndPoint(IPAddress.Parse(address), port);
 
-                Socket user = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                Socket user = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp); // Someone said "Family"?
                 // подключаемся к удаленному хосту
                 user.Connect(ipPoint);
                 
@@ -182,20 +182,20 @@ namespace SocketTcpClient
                 Console.Clear();
                 //stage 1
                 RecieveCards(user);
-                dealCards.DisplayPlayerCard();
+                display.PlayerCard();
                 stage++;//2
 
                 RecieveCards(user);
-                dealCards.DisplayFlope();
+                display.Flope();
                 //stage = 2
 
                 stage++;//3
                 RecieveCards(user);
-                dealCards.DisplayTurn();//ОШИБКА ОТПРАВЛЕНИЯ ТЕРНА
+                display.Turn();//ОШИБКА ОТПРАВЛЕНИЯ ТЕРНА
 
                 stage++;//4
                 RecieveCards(user);
-                dealCards.DisplayRiver();
+                display.River();
             }
             catch (Exception ex)
             {
