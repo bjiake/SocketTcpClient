@@ -103,7 +103,7 @@ namespace SocketTcpClient
                 arrayValueOfCards[0] = enumCard / 10000 % 100;//12
                 arrayValueOfCards[1] = enumCard / 100 % 100;//23
                 arrayValueOfCards[2] = enumCard % 100;//11
-                
+                //ss
             }
             else if(stage == 3)
             {//212
